@@ -1,0 +1,54 @@
+{
+    "name": "Test",
+    "maps": [
+        {
+            "name": "Player",
+            "id": "f2f1c29d-0daa-4932-a1f5-eeb139ace6af",
+            "actions": [
+                {
+                    "name": "CameraXY",
+                    "type": "Value",
+                    "id": "a7f6d540-7798-4ee0-aee1-62a429926b61",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "BoatMove",
+                    "type": "Value",
+                    "id": "fbec4ed8-26f1-4756-a39d-8539b86e905e",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "647d66cf-7926-48c5-9f47-cfa1ee0c5ddc",
+                    "path": "<Gamepad>/rightStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CameraXY",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f19b6a1d-091d-48dd-acaa-e63845db2214",
+                    "path": "<Gamepad>/leftStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BoatMove",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
