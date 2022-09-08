@@ -16,8 +16,11 @@ public class Player : MonoBehaviour
     private Rigidbody _rigidbody;
     private Test _gameInputs;
     private Vector2 _moveInputValue;
-    private Transform _transform;
-    private Vector3 _prePosition;
+    private float _score;
+    [SerializeField, Tooltip("FreeLookCamera")] private Camera _tpsCamera;
+    [SerializeField, Tooltip("潜る力")] private float _diveForce = 0f;
+    [Tooltip("ゲットしたアイテムをItemBaseから受け取る")]
+    List<ItemBase> _itemList = new List<ItemBase>();
 
     void Awake()
     {
@@ -34,40 +37,88 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        _transform = this.transform;
-        _prePosition = _transform.position;
     }
 
-
+    /// <summary>
+    /// InputActionにプレイヤーの移動を渡すメソッド
+    /// </summary>
+    /// <param name="context"></param>
     void OnMove(InputAction.CallbackContext context)
     {
         //BoatMoveアクションの入力を取得
         _moveInputValue = context.ReadValue<Vector2>();
     }
 
+    /// <summary>
+    /// スコアを増加させるメソッド
+    /// </summary>
+    public void ScoreUp(float upScore)
+    {
+        _score += upScore;
+    }
+
+    /// <summary>
+    ///潜るためのメソッド
+    /// </summary>
+    public void Dive(float diveForce)
+    {
+        _diveForce += diveForce;
+    }
+
+    /// <summary>
+    /// 速度を増加させるメソッド
+    /// </summary>
+    public void SpeedUp(float upSpeed)
+    {
+        _moveForce += upSpeed;
+    }
+
+    /// <summary>
+    /// アイテムをアイテムリストに追加する
+    /// </summary>
+    /// <param name="item"></param>
+    public void GetItem(ItemBase item)
+    {
+        _itemList.Add(item);
+    }
+
+
+
+
     void Update()
     {
-        _rigidbody.AddForce(new Vector3(_moveInputValue.x, 0, _moveInputValue.y) * _moveForce);
+        Move();
+        // アイテムを使う
+        if (Input.GetButtonDown("Fire1"))
+        {
+            if (_itemList.Count > 0)
+            {
+                // リストの先頭にあるアイテムを使って、破棄する
+                ItemBase item = _itemList[0];
+                _itemList.RemoveAt(0);
+                item.Activate();
+                Destroy(item.gameObject);
+            }
+        }
 
-        //現在のポジションを取得
-        var currentPosition = _transform.position;
+    }
 
-        //移動量を計算
-        var delta = currentPosition - _prePosition;
-        delta.y = 0;
 
-        // 静止している状態だと、進行方向を特定できないため回転しない
-        if (delta == Vector3.zero)
-            return;
+    /// <summary>
+    /// プレイヤーの移動を制御するクラス
+    /// </summary>
+    void Move()
+    {
+        //カメラのローカル空間のベクトルをワールド空間のベクトルへ変換
+        Vector3 pForward = _tpsCamera.transform.TransformDirection(Vector3.forward);
+        Vector3 pRight = _tpsCamera.transform.TransformDirection(Vector3.right);
 
-        // 進行方向（移動量ベクトル）に向くようなクォータニオンを取得
-        var rotation = Quaternion.LookRotation(delta * _moveForce, Vector3.up);
+        //ベクトルを加算して進行方向ベクトルを決定（y軸は無視）
+        Vector3 moveDir = (_moveInputValue.x * pRight + _moveInputValue.y * pForward) * _moveForce;
+        moveDir.y = _diveForce;
+        _rigidbody.AddForce(moveDir);
 
-        // オブジェクトの回転に反映
-        _transform.rotation = rotation;
-
-        //現在のポジジョンを保存
-        _prePosition = currentPosition;
-
+        //補完しながら進行方向を向く
+        transform.LookAt(transform.position + moveDir);
     }
 }
