@@ -13,9 +13,8 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour
 {
     [SerializeField] private float _moveForce;
-
     private Rigidbody _rigidbody;
-    private Test _gameInputs;
+    [Tooltip("キー入力")]private Test _gameInputs;
     private Vector2 _moveInputValue;
     private int _scoreValue;
     [SerializeField, Tooltip("FreeLookCamera")] private Camera _tpsCamera;
@@ -23,6 +22,7 @@ public class Player : MonoBehaviour
     [Tooltip("ゲットしたアイテムをItemBaseから受け取る")]
     List<ItemBase> _itemList = new List<ItemBase>();
     [SerializeField, Tooltip("Scoreテキスト")] Text _scoreText;
+    [Tooltip("現在のラップ数")] private int _lapcount = 0;
 
     void Awake()
     {
@@ -40,7 +40,7 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        _scoreText.GetComponent<Text>().text = "SCORE:" + _scoreValue.ToString("00000000");
+        _scoreText.GetComponent<Text>().text = "SCORE:" + _scoreValue.ToString("D8");
 
     }
 
