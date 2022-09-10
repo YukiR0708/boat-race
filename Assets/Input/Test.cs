@@ -44,6 +44,15 @@ public partial class @Test : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""UseItem"",
+                    ""type"": ""Button"",
+                    ""id"": ""c2fc056b-19cc-4041-a246-a48694a9aac6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -59,59 +68,15 @@ public partial class @Test : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""2D Vector"",
-                    ""id"": ""8e32e433-905a-40e2-b7d2-67422cf37b8e"",
-                    ""path"": ""2DVector"",
+                    ""name"": """",
+                    ""id"": ""bcd89b56-7bfe-42a7-bfe6-136834d1761d"",
+                    ""path"": ""<Mouse>/delta"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""CameraXY"",
-                    ""isComposite"": true,
+                    ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""c33917b3-7523-4a92-80fb-168a8b1bb308"",
-                    ""path"": ""<Keyboard>/upArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""CameraXY"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""652c1a38-4f8a-46b1-ad32-235fbcaf3472"",
-                    ""path"": ""<Keyboard>/downArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""CameraXY"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""27e69b2d-309b-4687-8a03-e54824abe54f"",
-                    ""path"": ""<Keyboard>/leftArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""CameraXY"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""20d59026-fd00-4a7c-a899-683707572d29"",
-                    ""path"": ""<Keyboard>/rightArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""CameraXY"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
                 },
                 {
                     ""name"": """",
@@ -126,7 +91,7 @@ public partial class @Test : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""2D Vector"",
-                    ""id"": ""6e39f1ac-a3d4-428b-a6d6-e1e5cbc83686"",
+                    ""id"": ""a828c504-d2e4-4b93-8393-ebfcbf3a945a"",
                     ""path"": ""2DVector"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -137,7 +102,7 @@ public partial class @Test : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""up"",
-                    ""id"": ""87185118-9710-4889-9181-2f170380d223"",
+                    ""id"": ""0877b9b6-7de0-4b71-8ef7-ff7d0539872d"",
                     ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -148,7 +113,7 @@ public partial class @Test : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""down"",
-                    ""id"": ""0170f230-3fdd-4c0d-812f-359ad525870d"",
+                    ""id"": ""651d8b82-56cc-4981-abbd-0f7df8593753"",
                     ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -159,7 +124,7 @@ public partial class @Test : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""left"",
-                    ""id"": ""6817d15f-b5a7-4646-b801-3f6d15744a0a"",
+                    ""id"": ""0b607f5a-64a8-47b1-bcb1-778514d58d2c"",
                     ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -170,7 +135,7 @@ public partial class @Test : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""right"",
-                    ""id"": ""10dd48b3-d63a-4ece-8827-9da39ce59a94"",
+                    ""id"": ""42cc51cb-e09b-4a47-a377-250e2e942bca"",
                     ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -178,6 +143,28 @@ public partial class @Test : IInputActionCollection2, IDisposable
                     ""action"": ""BoatMove"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4c0dd49d-0452-4a61-872a-9bf930ae0eeb"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""UseItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0fac75f2-4d19-4e0f-8668-85ae57863aec"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""UseItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -188,6 +175,7 @@ public partial class @Test : IInputActionCollection2, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_CameraXY = m_Player.FindAction("CameraXY", throwIfNotFound: true);
         m_Player_BoatMove = m_Player.FindAction("BoatMove", throwIfNotFound: true);
+        m_Player_UseItem = m_Player.FindAction("UseItem", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -249,12 +237,14 @@ public partial class @Test : IInputActionCollection2, IDisposable
     private IPlayerActions m_PlayerActionsCallbackInterface;
     private readonly InputAction m_Player_CameraXY;
     private readonly InputAction m_Player_BoatMove;
+    private readonly InputAction m_Player_UseItem;
     public struct PlayerActions
     {
         private @Test m_Wrapper;
         public PlayerActions(@Test wrapper) { m_Wrapper = wrapper; }
         public InputAction @CameraXY => m_Wrapper.m_Player_CameraXY;
         public InputAction @BoatMove => m_Wrapper.m_Player_BoatMove;
+        public InputAction @UseItem => m_Wrapper.m_Player_UseItem;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -270,6 +260,9 @@ public partial class @Test : IInputActionCollection2, IDisposable
                 @BoatMove.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBoatMove;
                 @BoatMove.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBoatMove;
                 @BoatMove.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBoatMove;
+                @UseItem.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUseItem;
+                @UseItem.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUseItem;
+                @UseItem.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUseItem;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -280,6 +273,9 @@ public partial class @Test : IInputActionCollection2, IDisposable
                 @BoatMove.started += instance.OnBoatMove;
                 @BoatMove.performed += instance.OnBoatMove;
                 @BoatMove.canceled += instance.OnBoatMove;
+                @UseItem.started += instance.OnUseItem;
+                @UseItem.performed += instance.OnUseItem;
+                @UseItem.canceled += instance.OnUseItem;
             }
         }
     }
@@ -288,5 +284,6 @@ public partial class @Test : IInputActionCollection2, IDisposable
     {
         void OnCameraXY(InputAction.CallbackContext context);
         void OnBoatMove(InputAction.CallbackContext context);
+        void OnUseItem(InputAction.CallbackContext context);
     }
 }

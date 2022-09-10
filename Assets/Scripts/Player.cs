@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 /// <summary>
 /// InputSystemから入力を受け取ってプレイヤー操作を制御するクラス
@@ -16,11 +17,12 @@ public class Player : MonoBehaviour
     private Rigidbody _rigidbody;
     private Test _gameInputs;
     private Vector2 _moveInputValue;
-    private float _score;
+    private int _scoreValue;
     [SerializeField, Tooltip("FreeLookCamera")] private Camera _tpsCamera;
     [SerializeField, Tooltip("潜る力")] private float _diveForce = 0f;
     [Tooltip("ゲットしたアイテムをItemBaseから受け取る")]
     List<ItemBase> _itemList = new List<ItemBase>();
+    [SerializeField, Tooltip("Scoreテキスト")] Text _scoreText;
 
     void Awake()
     {
@@ -28,86 +30,21 @@ public class Player : MonoBehaviour
         _gameInputs = new Test();
 
         //アクションの取得＆登録
-        _gameInputs.Player.BoatMove.started += OnMove;
-        _gameInputs.Player.BoatMove.performed += OnMove;
-        _gameInputs.Player.BoatMove.canceled += OnMove;
+        _gameInputs.Player.BoatMove.started += OnBoatMove;
+        _gameInputs.Player.BoatMove.performed += OnBoatMove;
+        _gameInputs.Player.BoatMove.canceled += OnBoatMove;
+        _gameInputs.Player.UseItem.performed += OnUseItem;
 
         _gameInputs.Enable();
     }
 
-    void Start()
+    private void Start()
     {
+        _scoreText.GetComponent<Text>().text = "SCORE:" + _scoreValue.ToString("00000000");
+
     }
-
-    /// <summary>
-    /// InputActionにプレイヤーの移動を渡すメソッド
-    /// </summary>
-    /// <param name="context"></param>
-    void OnMove(InputAction.CallbackContext context)
-    {
-        //BoatMoveアクションの入力を取得
-        _moveInputValue = context.ReadValue<Vector2>();
-    }
-
-    /// <summary>
-    /// スコアを増加させるメソッド
-    /// </summary>
-    public void ScoreUp(float upScore)
-    {
-        _score += upScore;
-    }
-
-    /// <summary>
-    ///潜るためのメソッド
-    /// </summary>
-    public void Dive(float diveForce)
-    {
-        _diveForce += diveForce;
-    }
-
-    /// <summary>
-    /// 速度を増加させるメソッド
-    /// </summary>
-    public void SpeedUp(float upSpeed)
-    {
-        _moveForce += upSpeed;
-    }
-
-    /// <summary>
-    /// アイテムをアイテムリストに追加する
-    /// </summary>
-    /// <param name="item"></param>
-    public void GetItem(ItemBase item)
-    {
-        _itemList.Add(item);
-    }
-
-
-
 
     void Update()
-    {
-        Move();
-        // アイテムを使う
-        if (Input.GetButtonDown("Fire1"))
-        {
-            if (_itemList.Count > 0)
-            {
-                // リストの先頭にあるアイテムを使って、破棄する
-                ItemBase item = _itemList[0];
-                _itemList.RemoveAt(0);
-                item.Activate();
-                Destroy(item.gameObject);
-            }
-        }
-
-    }
-
-
-    /// <summary>
-    /// プレイヤーの移動を制御するクラス
-    /// </summary>
-    void Move()
     {
         //カメラのローカル空間のベクトルをワールド空間のベクトルへ変換
         Vector3 pForward = _tpsCamera.transform.TransformDirection(Vector3.forward);
@@ -121,4 +58,71 @@ public class Player : MonoBehaviour
         //補完しながら進行方向を向く
         transform.LookAt(transform.position + moveDir);
     }
+
+
+    /// <summary>
+    /// InputActionにプレイヤーの移動を渡すメソッド
+    /// </summary>
+    /// <param name="context"></param>
+    void OnBoatMove(InputAction.CallbackContext context)
+    {
+        //BoatMoveアクションの入力を取得
+        _moveInputValue = context.ReadValue<Vector2>();
+    }
+
+    /// <summary>
+    /// InputActionにアイテムの使用を渡すメソッド
+    /// </summary>
+    /// <param name="context"></param>
+    void OnUseItem(InputAction.CallbackContext context)
+    {
+        if (_itemList.Count > 0)
+        {
+            Debug.Log("OnUseItemが呼ばれた");
+            // リストの先頭にあるアイテムを使って、破棄する
+            ItemBase item = _itemList[0];
+            _itemList.RemoveAt(0);
+            item.Activate();
+            Destroy(item.gameObject);
+        }
+    }
+
+
+    /// <summary>
+    /// スコアを増加させるメソッド
+    /// </summary>
+    public void ScoreUp(int upScore)
+    {
+        _scoreValue += upScore;
+        Debug.Log(_scoreValue);
+        _scoreText.GetComponent<Text>().text = "SCORE:" + _scoreValue.ToString("D8");
+    }
+
+    /// <summary>
+    ///潜るためのメソッド
+    /// </summary>
+    public void Dive(float diveForce)
+    {
+        _diveForce += diveForce;
+        Debug.Log(_diveForce);
+    }
+
+    /// <summary>
+    /// 速度を増加させるメソッド
+    /// </summary>
+    public void SpeedUp(float upSpeed)
+    {
+        _moveForce += upSpeed;
+        Debug.Log(_moveForce);
+    }
+
+    /// <summary>
+    /// アイテムをアイテムリストに追加する
+    /// </summary>
+    /// <param name="item"></param>
+    public void GetItem(ItemBase item)
+    {
+        _itemList.Add(item);
+    }
+
 }

@@ -21,7 +21,10 @@ public abstract class ItemBase : MonoBehaviour
     /// </summary>
     public abstract void Activate();
 
-
+    private void Start()
+    {
+        _audioSource = GameObject.FindGameObjectWithTag("Player").GetComponent<AudioSource>();
+    }
 
     // Update is called once per frame
     void Update()
@@ -29,15 +32,16 @@ public abstract class ItemBase : MonoBehaviour
         transform.Rotate(Vector3.up, _rotateSpeed * Time.deltaTime);
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
 
-        if (collision.gameObject.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
             if (_sound)
             {
-                AudioSource.PlayClipAtPoint(_sound, Camera.main.transform.position);
+                _audioSource.PlayOneShot(_sound);
             }
+
             // アイテム発動タイミングによって処理を分ける
             if (_whenActivated == ActivateTiming.Get)
             {
@@ -46,12 +50,13 @@ public abstract class ItemBase : MonoBehaviour
             }
             else if (_whenActivated == ActivateTiming.Use)
             {
+                Debug.Log("Useに分岐した");
                 // 見えない所に移動する
                 this.transform.position = new Vector3(0, -50, 0);
                 // コライダーを無効にする
-                GetComponent<Collider2D>().enabled = false;
+                GetComponent<Collider>().enabled = false;
                 // プレイヤーにアイテムを渡す
-                collision.gameObject.GetComponent<Player>().GetItem(this);
+                other.gameObject.GetComponent<Player>().GetItem(this);
             }
         }
     }
