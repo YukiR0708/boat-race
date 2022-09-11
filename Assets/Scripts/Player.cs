@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using System.Linq;
 
 /// <summary>InputSystemから入力を受け取ってプレイヤー操作を制御するクラス </summary>
 
@@ -21,9 +22,12 @@ public class Player : MonoBehaviour
     List<ItemBase> _itemList = new List<ItemBase>();
     [SerializeField, Tooltip("Scoreテキスト")] Text _scoreText;
     [SerializeField, Tooltip("周回数テキスト")] Text _lapText;
-    [Tooltip("現在のラップ数")] private int _lapcount;
+    [Tooltip("現在のラップ数")] private int _lapcount = 0;
+    [Tooltip("チェックポイントの名前リスト")] List<string> _checkPoints = new();
+    [Tooltip("チェックポイントの名前が正規ルート通りに入ってる配列")]//リストリセット時の書き換え用 
+    string[] _checkPoint = { "CheckPoint1", "CheckPoint2", "CheckPoint3", "Goal" };
 
-    void Awake()
+    private void Start()
     {
         _rigidbody = GetComponent<Rigidbody>();
         _gameInputs = new Test();
@@ -33,14 +37,12 @@ public class Player : MonoBehaviour
         _gameInputs.Player.BoatMove.performed += OnBoatMove;
         _gameInputs.Player.BoatMove.canceled += OnBoatMove;
         _gameInputs.Player.UseItem.performed += OnUseItem;
-
         _gameInputs.Enable();
-    }
+        ///*****各種デフォルト値設定*****
+        _scoreText.text = "SCORE:" + _scoreValue.ToString("D8");
+        _lapText.text = "LAP:" + _lapcount.ToString() + "/3";
+        _checkPoints = _checkPoint.ToList();
 
-    private void Start()
-    {
-        _scoreText.GetComponent<Text>().text = "SCORE:" + _scoreValue.ToString("D8");
-        _lapText.GetComponent<Text>().text = "LAP:" + _lapcount.ToString() + "/3";
     }
 
     void Update()
@@ -51,7 +53,7 @@ public class Player : MonoBehaviour
         Vector3 pRight = _tpsCamera.transform.TransformDirection(Vector3.right);
 
         //↓ベクトルを加算して進行方向ベクトルを決定（y軸は無視）
-        Vector3 moveDir = (_moveInputValue.x * pRight + _moveInputValue.y * pForward) * _moveForce;
+        Vector3 moveDir = (_moveInputValue.x * pRight + _moveInputValue.y * pForward) * _moveForce * Time.deltaTime;
         moveDir.y = 0;
         _rigidbody.AddForce(moveDir);
 
@@ -96,7 +98,7 @@ public class Player : MonoBehaviour
     public void ScoreUp(int upScore)
     {
         _scoreValue += upScore;
-        _scoreText.GetComponent<Text>().text = "SCORE:" + _scoreValue.ToString("D8");
+        _scoreText.text = "SCORE:" + _scoreValue.ToString("D8");
     }
 
     /// <summary> 潜るメソッド </summary>
@@ -111,5 +113,28 @@ public class Player : MonoBehaviour
     {
         _moveForce += upSpeed;
         Debug.Log(_moveForce);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.name == _checkPoints[0] && other.gameObject.CompareTag("Check"))
+        {
+            Debug.Log($"{_checkPoints[0]}を通過しました");
+            _checkPoints.RemoveAt(0);
+        }   
+        else if(other.gameObject.name == _checkPoints[0] && other.gameObject.CompareTag("Goal"))
+        {
+            Debug.Log($"{_checkPoints[0]}を通過しました");
+            _checkPoints.RemoveAt(0);
+            //↓次の周分入れ直す
+            _checkPoints = _checkPoint.ToList();
+            _lapcount++;
+            _lapText.text = "LAP:" + _lapcount.ToString() + "/3";
+
+        }
+        else if((other.gameObject.name != _checkPoints[0]) && (other.gameObject.CompareTag("Goal") || other.gameObject.CompareTag("Check")))
+        {
+            Debug.Log("正規ルートに戻ってください");
+        }
     }
 }

@@ -112,4 +112,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _sound: {fileID: 8300000, guid: b5164dd27bd6a2b47af384e215a87ede, type: 3}
   _whenActivated: 0
-  _upSpeed: 1
+  _upSpeed: 100

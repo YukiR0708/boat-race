@@ -5,9 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Goal
-  - Check1
-  - Check2
-  - Check3
+  - Check
   layers:
   - Default
   - TransparentFX
