@@ -16,9 +16,7 @@ public abstract class ItemBase : MonoBehaviour
     [SerializeField, Header("アイテム使用タイミング")] ActivateTiming _whenActivated = ActivateTiming.Get;
 
 
-    /// <summary>
-    /// アイテムが発動する効果を実装(override)する
-    /// </summary>
+    /// <summary>　アイテムが発動する効果を実装(override)する　</summary>
     public abstract void Activate();
 
     private void Start()
@@ -26,49 +24,51 @@ public abstract class ItemBase : MonoBehaviour
         _audioSource = GameObject.FindGameObjectWithTag("Player").GetComponent<AudioSource>();
     }
 
-    // Update is called once per frame
     void Update()
     {
+        //↓アイテムがくるくるまわる
         transform.Rotate(Vector3.up, _rotateSpeed * Time.deltaTime);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-
+        ///*****Playerに当たったときの処理*****
         if (other.CompareTag("Player"))
         {
+            //↓アイテムごとにアサインしたClipを鳴らす
             if (_sound)
             {
                 _audioSource.PlayOneShot(_sound);
             }
 
             // アイテム発動タイミングによって処理を分ける
+            //↓即時使用のアイテム
             if (_whenActivated == ActivateTiming.Get)
             {
                 Activate();
                 Destroy(this.gameObject);
             }
+            //↓使用ボタンでプレイヤーの任意のタイミングで使用するアイテム
             else if (_whenActivated == ActivateTiming.Use)
             {
                 Debug.Log("Useに分岐した");
-                // 見えない所に移動する
+                //↓見えない所に移動する
                 this.transform.position = new Vector3(0, -50, 0);
-                // コライダーを無効にする
+                // ↓一応コライダーを無効にする
                 GetComponent<Collider>().enabled = false;
-                // プレイヤーにアイテムを渡す
+                // ↓プレイヤーにアイテムを渡す
                 other.gameObject.GetComponent<Player>().GetItem(this);
             }
         }
     }
 
-    /// <summary>
-    /// アイテムをいつアクティベートするか
-    /// </summary>
+    /// <summary> アイテムをいつアクティベートするか </summary>
+    //各アイテムのPrefabのインスペクターから指定する
     enum ActivateTiming
     {
         /// <summary>取った時にすぐ使う</summary>
         Get,
-        /// <summary>「使う」コマンドで使う</summary>
+        /// <summary>アイテム使用ボタンで使う</summary>
         Use,
     }
 

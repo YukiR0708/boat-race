@@ -2,13 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// 潜れるようになるアイテムのコンポーネント
-/// </summary>
-/// 
+/// <summary> 潜れるようになるアイテムのコンポーネント </summary>
+
 public class Bubble : ItemBase   // ItemBase2D を継承している
 {
-    /// <summary>増加スコア</summary>
+    /// <summary>潜る力</summary>
     [SerializeField] int _diveForce;
 
 

@@ -4,15 +4,11 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    /// <summary>現在のゲーム状況</summary>
+    public enum GameStatus
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Start,  //タイトル,操作説明等 
+        GameMode, //ゲーム
+        Finish, //ゲーム終了
     }
 }
