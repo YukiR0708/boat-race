@@ -40,7 +40,7 @@ public class Player : MonoBehaviour
         _gameInputs.Enable();
         ///*****各種デフォルト値設定*****
         _scoreText.text = "SCORE:" + _scoreValue.ToString("D8");
-        _lapText.text = "LAP:" + _lapcount.ToString() + "/3";
+        _lapText.text = "LAP:1/3";
         _checkPoints = _checkPoint.ToList();
 
     }
@@ -117,12 +117,12 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.name == _checkPoints[0] && other.gameObject.CompareTag("Check"))
+        if (other.gameObject.name == _checkPoints[0] && other.gameObject.CompareTag("Check"))
         {
             Debug.Log($"{_checkPoints[0]}を通過しました");
             _checkPoints.RemoveAt(0);
-        }   
-        else if(other.gameObject.name == _checkPoints[0] && other.gameObject.CompareTag("Goal"))
+        }
+        else if (other.gameObject.name == _checkPoints[0] && other.gameObject.CompareTag("Goal"))
         {
             Debug.Log($"{_checkPoints[0]}を通過しました");
             _checkPoints.RemoveAt(0);
@@ -132,7 +132,11 @@ public class Player : MonoBehaviour
             _lapText.text = "LAP:" + _lapcount.ToString() + "/3";
 
         }
-        else if((other.gameObject.name != _checkPoints[0]) && (other.gameObject.CompareTag("Goal") || other.gameObject.CompareTag("Check")))
+        else if ((_lapcount == 0) && (other.gameObject.name != _checkPoints[0]) && (other.gameObject.CompareTag("Goal")))
+        {
+            _lapcount++;
+        }
+        else if ((other.gameObject.name != _checkPoints[0]) && (other.gameObject.CompareTag("Goal") || other.gameObject.CompareTag("Check")))
         {
             Debug.Log("正規ルートに戻ってください");
         }
