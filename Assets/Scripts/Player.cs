@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using System.Linq;
+using DG.Tweening;
 
 /// <summary>InputSystemから入力を受け取ってプレイヤー操作を制御するクラス </summary>
 
@@ -11,26 +12,36 @@ using System.Linq;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private float _moveForce;
+    //*****移動関連*****
     private Rigidbody _rigidbody;
+    [SerializeField] private float _moveForce;
     [Tooltip("キー入力")] private Test _gameInputs;
     private Vector2 _moveInputValue;
-    private int _scoreValue;
     [SerializeField, Tooltip("FreeLookCamera")] private Camera _tpsCamera;
+
+    //*****UI・DOTween関連*****
+    [SerializeField, Tooltip("Scoreテキスト")] Text _scoreText;
+    [SerializeField, Tooltip("周回数テキスト")] Text _lapText;
+    [SerializeField] float _scoreChangeInterval = 0.5f; //何秒かけて変化させるか
+     AudioSource _audioSource;
+
+    //*****アイテム関連*****
     [SerializeField, Tooltip("潜る力")] private float _diveForce;
     [Tooltip("ゲットしたアイテムをItemBaseから受け取る")]
     List<ItemBase> _itemList = new List<ItemBase>();
-    [SerializeField, Tooltip("Scoreテキスト")] Text _scoreText;
-    [SerializeField, Tooltip("周回数テキスト")] Text _lapText;
+    private int _scoreValue;
+
+    //*****周回計算関連*****
     [Tooltip("現在のラップ数")] private int _lapcount = 0;
     [Tooltip("チェックポイントの名前リスト")] List<string> _checkPoints = new();
-    [Tooltip("チェックポイントの名前が正規ルート通りに入ってる配列")]//リストリセット時の書き換え用 
+    [Tooltip("チェックポイントの名前が正規ルート通りに入ってる配列")] //リストリセット時の書き換え用 
     string[] _checkPoint = { "CheckPoint1", "CheckPoint2", "CheckPoint3", "Goal" };
 
     private void Start()
     {
         _rigidbody = GetComponent<Rigidbody>();
         _gameInputs = new Test();
+        _audioSource = GetComponent<AudioSource>();
 
         //*****InputActionの取得＆登録*****
         _gameInputs.Player.BoatMove.started += OnBoatMove;
@@ -97,8 +108,14 @@ public class Player : MonoBehaviour
     /// <summary> スコアを増加させるメソッド </summary>
     public void ScoreUp(int upScore)
     {
+        int oldScore = _scoreValue; //追加前のスコアを保存
         _scoreValue += upScore;
-        _scoreText.text = "SCORE:" + _scoreValue.ToString("D8");
+        DOTween.To(() => oldScore,  //DOTweenで連続的に変化させる対象の値
+               x => _scoreText.text = "SCORE:" + x.ToString("D8"),
+           _scoreValue,
+           _scoreChangeInterval)
+           .OnUpdate(() => _audioSource.Play())
+           .OnComplete(() => _scoreText.text = "SCORE:" + _scoreValue.ToString("D8"));
     }
 
     /// <summary> 潜るメソッド </summary>
