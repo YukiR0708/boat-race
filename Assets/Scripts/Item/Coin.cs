@@ -8,8 +8,8 @@ public class Coin : ItemBase   // ItemBase2D ‚ğŒp³‚µ‚Ä‚¢‚é
 {
     /// <summary>‘‰ÁƒXƒRƒA</summary>
     [SerializeField] int _upScore;
-
     public override void Activate()
+
     {
         FindObjectOfType<Player>().ScoreUp(_upScore);
     }
