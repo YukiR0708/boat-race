@@ -16,13 +16,15 @@ public class ButtonController : MonoBehaviour
     [SerializeField] GameObject _btPageBack;
     [SerializeField] GameObject _rankingPanel;
     [SerializeField] GameObject _helpPanel;
+    GameManager _gm;
 
-    bool _rkPanelActive = false;
-    bool _helpPanelActive = false;
+    static bool _rkPanelActive = false;
+    static bool _helpPanelActive = false;
     string _buttonName = "";
 
-    void Awake()
+    void Start()
     {
+        _gm = new GameManager();
         var button = GetComponent<Button>();
         button.onClick.AddListener(() => _buttonName = this.gameObject.name);
     }
@@ -54,10 +56,11 @@ public class ButtonController : MonoBehaviour
         }
         else if (_buttonName == "StartButton")
         {
-            //  1人用船選択画面へ（SceneManager完成したらそのメソッド呼ぶ）
+            //  シングルプレイ画面へ
+            _gm.StartFadeOut("SinglePlay");
 
         }
-        else if (_buttonName == "RankButton")
+        else if (_buttonName == "RankButton" || _buttonName == "CloseRank")
         {
             //RankingPanelの表示・非表示切り替え
             if (_rkPanelActive == false)
@@ -72,20 +75,26 @@ public class ButtonController : MonoBehaviour
             _rankingPanel.SetActive(_rkPanelActive);
 
         }
-        else if (_buttonName == "HelpButton")
+        else if (_buttonName == "HelpButton" || _buttonName == "CloseHelp")
         {
             //RankingPanelの表示・非表示切り替え
             if (_helpPanelActive == false)
             {
                 _helpPanelActive = true;
+                Debug.Log("表示");
+                Debug.Log(_helpPanelActive);
             }
             else if (_helpPanelActive == true)
             {
                 _helpPanelActive = false;
+                Debug.Log("非表示");
+                Debug.Log(_helpPanelActive);
             }
 
             _helpPanel.SetActive(_helpPanelActive);
 
         }
+
+        _buttonName = "";
     }
 }

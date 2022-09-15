@@ -73,7 +73,7 @@ public class Player : MonoBehaviour
     }
 
     //*****InputActionに入力を渡す処理*****
-    /// <summary> InputActionに、プレイヤーの移動を渡すメソッド </summary>
+    /// <summary> プレイヤー移動コールバック </summary>
     /// <param name="context"></param>
     void OnBoatMove(InputAction.CallbackContext context)
     {
@@ -81,7 +81,7 @@ public class Player : MonoBehaviour
         _moveInputValue = context.ReadValue<Vector2>();
     }
 
-    /// <summary> InputActionに、アイテムの使用を渡すメソッド </summary>
+    /// <summary>アイテム使用コールバック</summary>
     /// <param name="context"></param>
     void OnUseItem(InputAction.CallbackContext context)
     {
