@@ -78,7 +78,7 @@ public class Player : MonoBehaviour
     void OnBoatMove(InputAction.CallbackContext context)
     {
         //↓BoatMoveアクションの入力を取得
-        _moveInputValue = context.ReadValue<Vector2>();
+        _moveInputValue = context.ReadValue<Vector2>().normalized;
     }
 
     /// <summary>アイテム使用コールバック</summary>

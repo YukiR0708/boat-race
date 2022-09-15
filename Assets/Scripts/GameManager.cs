@@ -45,10 +45,15 @@ public class GameManager : MonoBehaviour
         ///*****各シーン共通の処理*****
         StartFadeIn(_fadeInImage);  // フェードイン
         _audioSource = GetComponent<AudioSource>();
-        _audioSource.playOnAwake = true;
         _audioSource.loop = true;
 
         ///*****シーンによってStartで行う処理が異なる*****
+        //タイトルシーンのとき
+
+
+        //ゲームシーンのとき
+
+        //
     }
 
 }

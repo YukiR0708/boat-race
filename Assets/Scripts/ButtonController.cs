@@ -16,7 +16,9 @@ public class ButtonController : MonoBehaviour
     [SerializeField] GameObject _btPageBack;
     [SerializeField] GameObject _rankingPanel;
     [SerializeField] GameObject _helpPanel;
+    [SerializeField] AudioSource _as;
     GameManager _gm;
+    [SerializeField, Header("ボタンクリック時のSE")] AudioClip _clickedSE;
     [Header("フェードアウト用イメージ"), SerializeField] Image _fadeOutImage;
 
 
@@ -29,6 +31,7 @@ public class ButtonController : MonoBehaviour
         _gm = gameObject.AddComponent<GameManager>();
         var button = GetComponent<Button>();
         button.onClick.AddListener(() => _buttonName = this.gameObject.name);
+
     }
 
     private void Update()
@@ -41,6 +44,7 @@ public class ButtonController : MonoBehaviour
             _btSingleStart.SetActive(true);
             _btRanking.SetActive(true);
             _btPageBack.SetActive(true);
+            _as.PlayOneShot(_clickedSE);
         }
         else if (_buttonName == "PageBackButton")
         {
@@ -50,6 +54,7 @@ public class ButtonController : MonoBehaviour
             _btSingleStart.SetActive(false);
             _btRanking.SetActive(false);
             _btPageBack.SetActive(false);
+            _as.PlayOneShot(_clickedSE);
         }
         else if (_buttonName == "TwoPlayerButton")
         {
@@ -60,6 +65,7 @@ public class ButtonController : MonoBehaviour
         {
             //  シングルプレイ画面へ
             _gm.StartFadeOut(_fadeOutImage, "SinglePlay");
+            _as.PlayOneShot(_clickedSE);
 
         }
         else if (_buttonName == "RankButton" || _buttonName == "CloseRank")
@@ -73,7 +79,7 @@ public class ButtonController : MonoBehaviour
             {
                 _rkPanelActive = false;
             }
-
+            _as.PlayOneShot(_clickedSE);
             _rankingPanel.SetActive(_rkPanelActive);
 
         }
@@ -93,8 +99,8 @@ public class ButtonController : MonoBehaviour
                 Debug.Log(_helpPanelActive);
             }
 
+            _as.PlayOneShot(_clickedSE);
             _helpPanel.SetActive(_helpPanelActive);
-
         }
 
         _buttonName = "";
