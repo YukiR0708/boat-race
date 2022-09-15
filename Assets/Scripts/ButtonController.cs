@@ -17,6 +17,8 @@ public class ButtonController : MonoBehaviour
     [SerializeField] GameObject _rankingPanel;
     [SerializeField] GameObject _helpPanel;
     GameManager _gm;
+    [Header("フェードアウト用イメージ"), SerializeField] Image _fadeOutImage;
+
 
     static bool _rkPanelActive = false;
     static bool _helpPanelActive = false;
@@ -24,7 +26,7 @@ public class ButtonController : MonoBehaviour
 
     void Start()
     {
-        _gm = new GameManager();
+        _gm = gameObject.AddComponent<GameManager>();
         var button = GetComponent<Button>();
         button.onClick.AddListener(() => _buttonName = this.gameObject.name);
     }
@@ -57,7 +59,7 @@ public class ButtonController : MonoBehaviour
         else if (_buttonName == "StartButton")
         {
             //  シングルプレイ画面へ
-            _gm.StartFadeOut("SinglePlay");
+            _gm.StartFadeOut(_fadeOutImage, "SinglePlay");
 
         }
         else if (_buttonName == "RankButton" || _buttonName == "CloseRank")

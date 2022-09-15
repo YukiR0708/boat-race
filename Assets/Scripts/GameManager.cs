@@ -10,7 +10,7 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     GameStatus _state = GameStatus.Start;
-    [Header("フェード用イメージ"), SerializeField] Image _fadeImage;
+    [Header("フェードイン用イメージ"), SerializeField] Image _fadeInImage;
     AudioSource _audioSource;
 
     /// <summary>現在のゲーム状態管理用</summary>
@@ -27,15 +27,15 @@ public class GameManager : MonoBehaviour
 
     ///*****シーン移動関連*****
     /// <summary>フェード</summary>
-    public void StartFadeOut(string scene)//フェードアウト関数
+    public void StartFadeOut(Image fadeOutImage, string scene)//フェードアウト関数
     {
-        _fadeImage.gameObject.SetActive(true);
-        this._fadeImage.DOFade(duration: 1f, endValue: 1f).OnComplete(() => SceneManager.LoadScene(scene));
+        fadeOutImage.gameObject.SetActive(true);
+        fadeOutImage.DOFade(duration: 1f, endValue: 1f).OnComplete(() => SceneManager.LoadScene(scene)).SetAutoKill();
         //ImageのColorは透明に設定 透明からだんだん黒へ
     }
-    public void StartFadeIn()//フェードイン関数
+    public void StartFadeIn(Image fadeInImage)//フェードイン関数
     {
-        this._fadeImage.DOFade(endValue: 0f, duration: 1f).OnComplete(() => _fadeImage.gameObject.SetActive(false));
+        fadeInImage.DOFade(endValue: 0f, duration: 1f).OnComplete(() => fadeInImage.gameObject.SetActive(false)).SetAutoKill();
         //ImageのColorは真っ黒に設定　黒からだんだん透明へ
     }
 
@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         ///*****各シーン共通の処理*****
-        StartFadeIn();  // フェードイン
+        StartFadeIn(_fadeInImage);  // フェードイン
         _audioSource = GetComponent<AudioSource>();
         _audioSource.playOnAwake = true;
         _audioSource.loop = true;
