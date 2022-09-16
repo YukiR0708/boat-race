@@ -13,7 +13,6 @@ public class GameManager : MonoBehaviour
 {
     GameStatus _state = GameStatus.Start;
     [SerializeField, Header("カメラ入力")] CinemachineInputProvider _freeLookCamera;
-    [SerializeField, Header("カウントダウンSE")] AudioClip _countdownSE;
     //*****UI関連*****
     [Header("フェードイン用イメージ"), SerializeField] Image _fadeInImage;
     public static AudioSource _audioSource;
@@ -73,10 +72,10 @@ public class GameManager : MonoBehaviour
         //ゲームシーンのとき
 
         //NavMesh（NPC)止めておく・シネマシーンcart（ターゲット）止めておく・Player操作受け付けない（UIのみ受け付ける）
-        _npc1.speed = npc1Speed;
-        _npc2.speed = npc2Speed;
-        _npc3.speed = npc3Speed;
-        _npcTarget.m_Speed = targetSpeed;
+        _npc1.speed = 0f;
+        _npc2.speed = 0f;
+        _npc3.speed = 0f;
+        _npcTarget.m_Speed = 0f;
     }
 
     private void Update()
@@ -101,6 +100,5 @@ public class GameManager : MonoBehaviour
         _countDownPanel.SetActive(true);
         _rulePanel.SetActive(false);
         _freeLookCamera.enabled = true;
-        
 ;    }
 }

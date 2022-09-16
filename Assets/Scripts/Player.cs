@@ -37,6 +37,9 @@ public class Player : MonoBehaviour
     [Tooltip("チェックポイントの名前が正規ルート通りに入ってる配列")] //リストリセット時の書き換え用 
     string[] _checkPoint = { "CheckPoint1", "CheckPoint2", "CheckPoint3", "Goal" };
 
+    /// <summary>チェックポイントを通った回数を計測するためのプロパティ。OrderCheckerで順位判定に使用する</summary>
+    public int PlayerCheckCount { get; private set; }
+
     private void Start()
     {
         _rigidbody = GetComponent<Rigidbody>();
@@ -136,11 +139,14 @@ public class Player : MonoBehaviour
     {
         if (other.gameObject.name == _checkPoints[0] && other.gameObject.CompareTag("Check"))
         {
+            PlayerCheckCount++;
             Debug.Log($"{_checkPoints[0]}を通過しました");
             _checkPoints.RemoveAt(0);
         }
+        //↓1周したとき
         else if (other.gameObject.name == _checkPoints[0] && other.gameObject.CompareTag("Goal"))
         {
+            PlayerCheckCount++;
             Debug.Log($"{_checkPoints[0]}を通過しました");
             _checkPoints.RemoveAt(0);
             //↓次の周分入れ直す
@@ -151,6 +157,8 @@ public class Player : MonoBehaviour
         }
         else if ((_lapcount == 0) && (other.gameObject.name != _checkPoints[0]) && (other.gameObject.CompareTag("Goal")))
         {
+            PlayerCheckCount++;
+            //↓スタートのとき、ゴールを通ったタイミングでLap数をかぞえる　表記は最初から1/3周
             _lapcount++;
         }
         else if ((other.gameObject.name != _checkPoints[0]) && (other.gameObject.CompareTag("Goal") || other.gameObject.CompareTag("Check")))
