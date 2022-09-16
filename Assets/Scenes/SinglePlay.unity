@@ -16738,6 +16738,7 @@ MonoBehaviour:
   _npc1: {fileID: 2229253546090186388}
   _npc2: {fileID: 712417563}
   _npc3: {fileID: 342801556}
+  _npcTarget: {fileID: 0}
 --- !u!4 &843610362
 Transform:
   m_ObjectHideFlags: 0
