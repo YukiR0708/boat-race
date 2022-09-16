@@ -3,10 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-/// <summary>カウントダウン終了時の処理</summary>
+/// <summary>カウントダウンのアニメーションイベント</summary>
 public class CountDown : MonoBehaviour
     
 {
+    [SerializeField, Header("カウントダウン用SE")] AudioClip _countdownSE;
+
+    /// <summary>カウントダウン用SEを鳴らす</summary>
+    void PlayCountDownSE()
+    {
+        GameManager._audioSource.PlayOneShot(_countdownSE, 1.0f);
+    }
+
 
     /// <summary>カウントダウンのアニメーション終了時に呼ぶイベント </summary>
     void CompletedCountDown()
@@ -17,13 +25,15 @@ public class CountDown : MonoBehaviour
         GameManager.npc2Speed = Random.Range(8.0f, 9.0f);
         GameManager.npc3Speed = Random.Range(8.0f, 9.0f);
         GameManager.targetSpeed = 10f;
-        GameManager._audioSource.Play();
         Player.gameInputs.Enable();
 
     }
-
+    
+    /// <summary>カウントダウンパネルを非表示にする</summary>
     void CountDownFalse()
     {
+        GameManager._audioSource.volume = 0.1f;
+        GameManager._audioSource.Play();
         this.gameObject.SetActive(false);
     }
 }

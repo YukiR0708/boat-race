@@ -12,6 +12,8 @@ using Cinemachine;
 public class GameManager : MonoBehaviour
 {
     GameStatus _state = GameStatus.Start;
+    [SerializeField, Header("カメラ入力")] CinemachineInputProvider _freeLookCamera;
+    [SerializeField, Header("カウントダウンSE")] AudioClip _countdownSE;
     //*****UI関連*****
     [Header("フェードイン用イメージ"), SerializeField] Image _fadeInImage;
     public static AudioSource _audioSource;
@@ -27,7 +29,7 @@ public class GameManager : MonoBehaviour
     [Tooltip("NPC3のスピード")] public static float npc3Speed = 0f;
     [SerializeField, Header("NPCのターゲット")] CinemachineDollyCart _npcTarget;
     [Tooltip("NPCのターゲットのスピード")] public static float targetSpeed = 0f;
-    [SerializeField, Header("カメラ入力")] CinemachineInputProvider _freeLookCamera;
+
 
     /// <summary>現在のゲーム状態管理用</summary>
     public enum GameStatus
