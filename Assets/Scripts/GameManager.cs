@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     GameStatus _state = GameStatus.Start;
     //*****UI関連*****
     [Header("フェードイン用イメージ"), SerializeField] Image _fadeInImage;
-    AudioSource _audioSource;
+    public static AudioSource _audioSource;
     [SerializeField, Header("ルール説明用パネル")] GameObject _rulePanel;
     [SerializeField, Header("カウントダウン用パネル")] GameObject _countDownPanel;
 
@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
     [Tooltip("NPC3のスピード")] public static float npc3Speed = 0f;
     [SerializeField, Header("NPCのターゲット")] CinemachineDollyCart _npcTarget;
     [Tooltip("NPCのターゲットのスピード")] public static float targetSpeed = 0f;
+    [SerializeField, Header("カメラ入力")] CinemachineInputProvider _freeLookCamera;
 
     /// <summary>現在のゲーム状態管理用</summary>
     public enum GameStatus
@@ -92,10 +93,12 @@ public class GameManager : MonoBehaviour
     }
 
 
-    /// <summary>ルールパネルを閉じるボタンで作動。カウントダウンスタート。</summary>
+    /// <summary>ルールパネルを閉じるボタンで作動。カウントダウンスタート</summary>
     public void StartCountDown()
     {
         _countDownPanel.SetActive(true);
         _rulePanel.SetActive(false);
+        _freeLookCamera.enabled = true;
+        
 ;    }
 }

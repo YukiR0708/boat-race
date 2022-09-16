@@ -15,7 +15,7 @@ public class Player : MonoBehaviour
     //*****移動関連*****
     private Rigidbody _rigidbody;
     [SerializeField] private float _moveForce;
-    [Tooltip("キー入力")] private Test _gameInputs;
+    [Tooltip("キー入力")] public static Test gameInputs;
     private Vector2 _moveInputValue;
     [SerializeField, Tooltip("FreeLookCamera")] private Camera _tpsCamera;
 
@@ -40,15 +40,15 @@ public class Player : MonoBehaviour
     private void Start()
     {
         _rigidbody = GetComponent<Rigidbody>();
-        _gameInputs = new Test();
+        gameInputs = new Test();
         _audioSource = GetComponent<AudioSource>();
 
         //*****InputActionの取得＆登録*****
-        _gameInputs.Player.BoatMove.started += OnBoatMove;
-        _gameInputs.Player.BoatMove.performed += OnBoatMove;
-        _gameInputs.Player.BoatMove.canceled += OnBoatMove;
-        _gameInputs.Player.UseItem.performed += OnUseItem;
-        _gameInputs.Enable();
+        gameInputs.Player.BoatMove.started += OnBoatMove;
+        gameInputs.Player.BoatMove.performed += OnBoatMove;
+        gameInputs.Player.BoatMove.canceled += OnBoatMove;
+        gameInputs.Player.UseItem.performed += OnUseItem;
+        //gameInputs.Enable();
         ///*****各種デフォルト値設定*****
         _scoreText.text = "SCORE:" + _scoreValue.ToString("D8");
         _lapText.text = "LAP:1/3";
