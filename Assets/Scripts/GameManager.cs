@@ -15,6 +15,12 @@ public class GameManager : MonoBehaviour
     AudioSource _audioSource;
     [SerializeField, Header("ルール説明用パネル")] GameObject _rulePanel;
     [SerializeField, Header("カウントダウン用パネル")] GameObject _countDownPanel;
+    [SerializeField, Header("NPC１")] NavMeshAgent _npc1;
+    [Tooltip("NPC1のスピード")] public static float npc1Speed = 0f;
+    [SerializeField, Header("NPC2")] NavMeshAgent _npc2;
+    [Tooltip("NPC2のスピード")] public static float npc2Speed = 0f;
+    [SerializeField, Header("NPC3")] NavMeshAgent _npc3;
+    [Tooltip("NPC3のスピード")] public static float npc3Speed = 0f;
 
     /// <summary>現在のゲーム状態管理用</summary>
     public enum GameStatus
@@ -58,7 +64,26 @@ public class GameManager : MonoBehaviour
         //ゲームシーンのとき
 
         //NavMesh止めておく・シネマシーンcart止めておく・Player操作受け付けない（UIのみ受け付ける）
+        _npc1.speed = npc1Speed;
+        _npc2.speed = npc2Speed;
+        _npc3.speed = npc3Speed;
     }
+
+    private void Update()
+    {
+        ///*****シーンによってUpdateで行う処理が異なる*****
+        //タイトルシーンのとき
+
+
+        //ゲームシーンのとき
+
+        //NavMeshのSpeedを取得する
+        _npc1.speed = npc1Speed;
+        _npc2.speed = npc2Speed;
+        _npc3.speed = npc3Speed;
+
+    }
+
 
     /// <summary>ルールパネルを閉じるボタンで作動。カウントダウンスタート。</summary>
     public void StartCountDown()
