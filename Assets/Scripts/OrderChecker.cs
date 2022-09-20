@@ -23,9 +23,10 @@ public class OrderChecker : MonoBehaviour
     void Update()
     {
         //各NPCのチェックポイント通過数を確認
-        _count1 = _npc1Con.CheckCount;
-        _count2 = _npc2Con.CheckCount;
-        _count3 = _npc3Con.CheckCount;
-        _countPlayer = _playerCon.PlayerCheckCount;
+        //_count1 = _npc1Con.CheckCount;
+        //_count2 = _npc2Con.CheckCount;
+        //_count3 = _npc3Con.CheckCount;
+        //_countPlayer = _playerCon.PlayerCheckCount;
+
     }
 }

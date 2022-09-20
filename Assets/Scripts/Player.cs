@@ -21,7 +21,6 @@ public class Player : MonoBehaviour
 
     //*****UI・DOTween関連*****
     [SerializeField, Tooltip("Scoreテキスト")] Text _scoreText;
-    [SerializeField, Tooltip("周回数テキスト")] Text _lapText;
     [SerializeField] float _scoreChangeInterval = 0.5f; //何秒かけて変化させるか
      AudioSource _audioSource;
 
@@ -31,14 +30,6 @@ public class Player : MonoBehaviour
     List<ItemBase> _itemList = new List<ItemBase>();
     private int _scoreValue;
 
-    //*****周回計算関連*****
-    [Tooltip("現在のラップ数")] private int _lapcount = 0;
-    [Tooltip("チェックポイントの名前リスト")] List<string> _checkPoints = new();
-    [Tooltip("チェックポイントの名前が正規ルート通りに入ってる配列")] //リストリセット時の書き換え用 
-    string[] _checkPoint = { "CheckPoint1", "CheckPoint2", "CheckPoint3", "Goal" };
-
-    /// <summary>チェックポイントを通った回数を計測するためのプロパティ。OrderCheckerで順位判定に使用する</summary>
-    public int PlayerCheckCount { get; private set; }
 
     private void Start()
     {
@@ -54,8 +45,6 @@ public class Player : MonoBehaviour
         //gameInputs.Enable();
         ///*****各種デフォルト値設定*****
         _scoreText.text = "SCORE:" + _scoreValue.ToString("D8");
-        _lapText.text = "LAP:1/3";
-        _checkPoints = _checkPoint.ToList();
 
     }
 
@@ -135,35 +124,4 @@ public class Player : MonoBehaviour
         Debug.Log(_moveForce);
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.name == _checkPoints[0] && other.gameObject.CompareTag("Check"))
-        {
-            PlayerCheckCount++;
-            Debug.Log($"{_checkPoints[0]}を通過しました");
-            _checkPoints.RemoveAt(0);
-        }
-        //↓1周したとき
-        else if (other.gameObject.name == _checkPoints[0] && other.gameObject.CompareTag("Goal"))
-        {
-            PlayerCheckCount++;
-            Debug.Log($"{_checkPoints[0]}を通過しました");
-            _checkPoints.RemoveAt(0);
-            //↓次の周分入れ直す
-            _checkPoints = _checkPoint.ToList();
-            _lapcount++;
-            _lapText.text = "LAP:" + _lapcount.ToString() + "/3";
-
-        }
-        else if ((_lapcount == 0) && (other.gameObject.name != _checkPoints[0]) && (other.gameObject.CompareTag("Goal")))
-        {
-            PlayerCheckCount++;
-            //↓スタートのとき、ゴールを通ったタイミングでLap数をかぞえる　表記は最初から1/3周
-            _lapcount++;
-        }
-        else if ((other.gameObject.name != _checkPoints[0]) && (other.gameObject.CompareTag("Goal") || other.gameObject.CompareTag("Check")))
-        {
-            Debug.Log("正規ルートに戻ってください");
-        }
-    }
 }

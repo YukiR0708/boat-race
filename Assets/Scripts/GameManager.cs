@@ -37,6 +37,8 @@ public class GameManager : MonoBehaviour
         Rule,   //ルール説明
         CountDown,  //3・2・1・Startのアニメーション
         GameMode, //ゲーム
+        Pause, //ポーズ
+        UnPause,    //ポーズ解除
         Finish, //ゲーム終了
     }
 
