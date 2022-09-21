@@ -1,32 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 /// <summary> 順位判定をするためのクラス </summary>
 public class OrderChecker : MonoBehaviour
 {
-    [SerializeField] GameObject _npc1, _npc2, _npc3, _player;
-    NpcController _npc1Con, _npc2Con, _npc3Con;
-    Player _playerCon;
-    [Tooltip("各NPCのチェックポイント通過数")] int _count1, _count2, _count3, _countPlayer;
+     [SerializeField,Header("PlayerとNPCのリスト")] List<Boat> boatList;
 
-    // Start is called before the first frame update
-    void Start()
+
+    private void LateUpdate()
     {
-        _npc1Con = _npc1.GetComponent<NpcController>();
-        _npc2Con = _npc2.GetComponent<NpcController>();
-        _npc3Con = _npc3.GetComponent<NpcController>();
-        _playerCon = _player.GetComponent<Player>();
-    }
+        var order = boatList.OrderByDescending(x => x.CheckCount).ThenByDescending(x => x.Progress);
+        int rank = 0;
 
-    // Update is called once per frame
-    void Update()
-    {
-        //各NPCのチェックポイント通過数を確認
-        //_count1 = _npc1Con.CheckCount;
-        //_count2 = _npc2Con.CheckCount;
-        //_count3 = _npc3Con.CheckCount;
-        //_countPlayer = _playerCon.PlayerCheckCount;
-
+        foreach (var boat in order)
+        {
+            boat.SetRank(rank++);
+        }
     }
 }

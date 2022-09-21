@@ -15,7 +15,7 @@ public class Boat : MonoBehaviour
     [SerializeField] List<GameObject> checkPoint;
     [Tooltip("保存用のチェックポイントリスト")] List<GameObject> checkPoints = new();
     [SerializeField, Tooltip("周回数テキスト")] Text _lapText;
-    [SerializeField, Tooltip("移動量テキスト")] Text _progressText;
+    [SerializeField, Tooltip("順位テキスト")] Text _rankText;
     [Tooltip("現在のラップ数")] private int _lapcount = 0;
     [Tooltip("移動量を計測する際、基準とするチェックポイント")] GameObject _currentCheckPoint;
     [Tooltip("移動量を計測する際、次に通るチェックポイント")] GameObject _nextCheckPoint;
@@ -25,8 +25,8 @@ public class Boat : MonoBehaviour
     {
         checkPoints.AddRange(checkPoint);
         if (this.gameObject.name == "Player") _lapText.text = $"LAP:1/3";
-        _currentCheckPoint = checkPoint[0];
-        _nextCheckPoint = checkPoint[1];
+        _currentCheckPoint = checkPoint[checkPoint.Count - 1];
+        _nextCheckPoint = checkPoint[0];
     }
 
     private void OnTriggerEnter(Collider other)
@@ -34,7 +34,7 @@ public class Boat : MonoBehaviour
         if (other.gameObject == checkPoint[0] && (other.gameObject.CompareTag("Check") || (other.gameObject.CompareTag("Goal"))))
         {
             CheckCount++;
-            Debug.Log($"{this.gameObject}が{checkPoint[0]}を通過しました");
+            Debug.Log($"{this.gameObject}のチェックポイント通過数{CheckCount}");
             //↓前のチェックポイントからの移動量をリセットし、今通ったのと次のチェックポイントを保存
             //Progress = 0f;
             _currentCheckPoint = checkPoint[0];
@@ -70,6 +70,11 @@ public class Boat : MonoBehaviour
         Progress = GetProgress(_currentCheckPoint, _nextCheckPoint);
     }
 
+
+    /// <summary>通過したチェックポイントの数が同じ場合の順位比較用メソッド
+    /// 直近のチェックポイントからのベクトルと、進行方向の単位ベクトルから内積を出すことで、前のチェックポイントからの移動量を求める</summary>
+    /// <param name="cCheck"></param>
+    /// <param name="nCheck"></param>
     private float GetProgress(GameObject cCheck, GameObject nCheck)
     {
         //↓移動量を求める際基準とする単位ベクトル
@@ -80,5 +85,10 @@ public class Boat : MonoBehaviour
 
         // ↓内積から移動量を求める
         return Vector3.Dot(uniVec, vec);
+    }
+
+    public void SetRank(int rank)
+    {
+        if(_rankText)_rankText.text = $"現在：{rank + 1}位";
     }
 }
