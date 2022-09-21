@@ -19,6 +19,7 @@ public class Boat : MonoBehaviour
     [Tooltip("現在のラップ数")] private int _lapcount = 0;
     [Tooltip("移動量を計測する際、基準とするチェックポイント")] GameObject _currentCheckPoint;
     [Tooltip("移動量を計測する際、次に通るチェックポイント")] GameObject _nextCheckPoint;
+    [SerializeField, Header("コライダーと座標の差分補完のためのオブジェクト")] GameObject _boatPos;
 
     private void Start()
     {
@@ -67,15 +68,15 @@ public class Boat : MonoBehaviour
     private void Update()
     {
         Progress = GetProgress(_currentCheckPoint, _nextCheckPoint);
-        if(_progressText)_progressText.text = $"{Progress.ToString()}";
     }
 
     private float GetProgress(GameObject cCheck, GameObject nCheck)
     {
         //↓移動量を求める際基準とする単位ベクトル
-        var uniVec = (nCheck.transform.position - cCheck.transform.position).normalized;
+        Vector3 uniVec = (nCheck.transform.position - cCheck.transform.position).normalized;
+        
         //↓現在のPlayer・NPCの、チェックポイントを通ってから移動したベクトル
-        var vec = this.gameObject.transform.position - cCheck.transform.position;
+        Vector3 vec = _boatPos.transform.position - cCheck.transform.position;
 
         // ↓内積から移動量を求める
         return Vector3.Dot(uniVec, vec);
