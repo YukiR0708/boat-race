@@ -28,7 +28,7 @@ public class Player : MonoBehaviour
     [SerializeField, Tooltip("潜る力")] private float _diveForce;
     [Tooltip("ゲットしたアイテムをItemBaseから受け取る")]
     List<ItemBase> _itemList = new List<ItemBase>();
-    private int _scoreValue;
+    public int ScoreValue { get; private set; }
 
 
     private void Start()
@@ -44,7 +44,7 @@ public class Player : MonoBehaviour
         gameInputs.Player.UseItem.performed += OnUseItem;
         //gameInputs.Enable();
         ///*****各種デフォルト値設定*****
-        _scoreText.text = "SCORE:" + _scoreValue.ToString("D8");
+        _scoreText.text = "SCORE:" + ScoreValue.ToString("D8");
 
     }
 
@@ -100,14 +100,14 @@ public class Player : MonoBehaviour
     /// <summary> スコアを増加させるメソッド </summary>
     public void ScoreUp(int upScore)
     {
-        int oldScore = _scoreValue; //追加前のスコアを保存
-        _scoreValue += upScore;
+        int oldScore = ScoreValue; //追加前のスコアを保存
+        ScoreValue += upScore;
         DOTween.To(() => oldScore,  //DOTweenで連続的に変化させる対象の値
                x => _scoreText.text = "SCORE:" + x.ToString("D8"),
-           _scoreValue,
+           ScoreValue,
            _scoreChangeInterval)
            .OnUpdate(() => _audioSource.Play())
-           .OnComplete(() => _scoreText.text = "SCORE:" + _scoreValue.ToString("D8"));
+           .OnComplete(() => _scoreText.text = "SCORE:" + ScoreValue.ToString("D8"));
     }
 
     /// <summary> 潜るメソッド </summary>

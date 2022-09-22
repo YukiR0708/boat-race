@@ -12,7 +12,7 @@ public class Boat : MonoBehaviour
     /// <summary>チェックポイントを通ってからの移動量を計測するためのプロパティ。OrderCheckerで順位判定に使用する</summary>
     public float Progress { get; private set; }
 
-    [SerializeField] List<GameObject> checkPoint;
+    [SerializeField] List<GameObject> checkPoint = new();
     [Tooltip("保存用のチェックポイントリスト")] List<GameObject> checkPoints = new();
     [SerializeField, Tooltip("周回数テキスト")] Text _lapText;
     [SerializeField, Tooltip("順位テキスト")] Text _rankText;
@@ -20,6 +20,7 @@ public class Boat : MonoBehaviour
     [Tooltip("移動量を計測する際、基準とするチェックポイント")] GameObject _currentCheckPoint;
     [Tooltip("移動量を計測する際、次に通るチェックポイント")] GameObject _nextCheckPoint;
     [SerializeField, Header("コライダーと座標の差分補完のためのオブジェクト")] GameObject _boatPos;
+    [SerializeField] OrderChecker _orderChecker;
 
     private void Start()
     {
@@ -31,24 +32,23 @@ public class Boat : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        //↓チェックポイントのリスト通りの順番で通っていたらカウントアップする
         if (other.gameObject == checkPoint[0] && (other.gameObject.CompareTag("Check") || (other.gameObject.CompareTag("Goal"))))
         {
             CheckCount++;
             Debug.Log($"{this.gameObject}のチェックポイント通過数{CheckCount}");
-            //↓前のチェックポイントからの移動量をリセットし、今通ったのと次のチェックポイントを保存
-            //Progress = 0f;
+            //↓前のチェックポイントからの移動量をリセットし、今通ったチェックポイントと次のチェックポイントを保存
             _currentCheckPoint = checkPoint[0];
             checkPoint.RemoveAt(0);
             //↓1周したら
             if (other.gameObject.CompareTag("Goal"))
             {
-                //↓次の周分入れ直す
+                //↓次の周分入れ直してラップ数カウント・UI表示（Playerの場合）する
                 checkPoint.AddRange(checkPoints);
-                if (this.gameObject.name == "Player")
-                {
-                    _lapcount++;
-                    _lapText.text = $"LAP:{_lapcount.ToString()}/3";
-                }
+                _lapcount++;
+                if (_lapText) _lapText.text = $"LAP:{_lapcount.ToString()}/3";
+                //↓3周したらlastOrderに自身を追加する
+                if (CheckCount == checkPoint.Count * 3) _orderChecker.lastOrder.Add(this);
 
             }
             _nextCheckPoint = checkPoint[0];
@@ -79,7 +79,7 @@ public class Boat : MonoBehaviour
     {
         //↓移動量を求める際基準とする単位ベクトル
         Vector3 uniVec = (nCheck.transform.position - cCheck.transform.position).normalized;
-        
+
         //↓現在のPlayer・NPCの、チェックポイントを通ってから移動したベクトル
         Vector3 vec = _boatPos.transform.position - cCheck.transform.position;
 
@@ -87,8 +87,10 @@ public class Boat : MonoBehaviour
         return Vector3.Dot(uniVec, vec);
     }
 
+    /// <summary>現在の順位をUIに表示するメソッド。OrderCheckerから呼ばれる </summary>
+    /// <param name="rank"></param>
     public void SetRank(int rank)
     {
-        if(_rankText)_rankText.text = $"現在：{rank + 1}位";
+        if (_rankText) _rankText.text = $"現在：{rank + 1}位";
     }
 }
