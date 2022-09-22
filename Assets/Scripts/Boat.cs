@@ -36,7 +36,7 @@ public class Boat : MonoBehaviour
         if (other.gameObject == checkPoint[0] && (other.gameObject.CompareTag("Check") || (other.gameObject.CompareTag("Goal"))))
         {
             CheckCount++;
-            Debug.Log($"{this.gameObject}のチェックポイント通過数{CheckCount}");
+            //Debug.Log($"{this.gameObject}のチェックポイント通過数{CheckCount}");
             //↓前のチェックポイントからの移動量をリセットし、今通ったチェックポイントと次のチェックポイントを保存
             _currentCheckPoint = checkPoint[0];
             checkPoint.RemoveAt(0);

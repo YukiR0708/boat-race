@@ -13,6 +13,7 @@ public class OrderChecker : MonoBehaviour
     [SerializeField, Header("結果発表パネル")] GameObject _resultPanel;
     [SerializeField] Text _first, _second, _third, _fourth, _pScore;
     [SerializeField] Player _player;
+    [SerializeField] GameManager _gm;
 
     private void LateUpdate()
     {
@@ -28,13 +29,15 @@ public class OrderChecker : MonoBehaviour
         //↓すべてのPlayer・NPCがゴールしたら
         if(lastOrder.Count == _boatSum)
         {
+            _gm.state = GameManager.GameStatus.Finish;
             //結果を表示する
-            _first.text = $"1st  {lastOrder[0].name}";
-            _second.text = $"2nd  {lastOrder[1].name}";
-            _third.text = $"3rd  {lastOrder[2].name}";
-            _fourth.text = $"4th  {lastOrder[3].name}";
+            _first.text = $"1st {lastOrder[0].name}";
+            _second.text = $"2nd {lastOrder[1].name}";
+            _third.text = $"3rd {lastOrder[2].name}";
+            _fourth.text = $"4th {lastOrder[3].name}";
             _pScore.text = $"Player's Score : {_player.ScoreValue.ToString("D8")}";
             _resultPanel.SetActive(true);
+            
         }
     }
 }

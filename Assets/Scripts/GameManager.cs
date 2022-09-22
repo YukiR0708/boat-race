@@ -11,7 +11,8 @@ using Cinemachine;
 
 public class GameManager : MonoBehaviour
 {
-    GameStatus _state = GameStatus.Start;
+    public GameStatus state = GameStatus.Title;
+    //[Tooltip("現在のシーン名")] string _currentScene;
     [SerializeField, Header("カメラ入力")] CinemachineInputProvider _freeLookCamera;
     //*****UI関連*****
     [Header("フェードイン用イメージ"), SerializeField] Image _fadeInImage;
@@ -20,23 +21,21 @@ public class GameManager : MonoBehaviour
     [SerializeField, Header("カウントダウン用パネル")] GameObject _countDownPanel;
 
     //***** NPC関連*****
-    [SerializeField, Header("NPC１")] NavMeshAgent _npc1;
+    [SerializeField] NavMeshAgent _npc1;
     [Tooltip("NPC1のスピード")] public static float npc1Speed = 0f;
-    [SerializeField, Header("NPC2")] NavMeshAgent _npc2;
+    [SerializeField] NavMeshAgent _npc2;
     [Tooltip("NPC2のスピード")] public static float npc2Speed = 0f;
     [SerializeField, Header("NPC3")] NavMeshAgent _npc3;
     [Tooltip("NPC3のスピード")] public static float npc3Speed = 0f;
-    [SerializeField, Header("NPCのターゲット")] CinemachineDollyCart _npcTarget;
+    [SerializeField] CinemachineDollyCart _npcTarget;
     [Tooltip("NPCのターゲットのスピード")] public static float targetSpeed = 0f;
 
 
     /// <summary>現在のゲーム状態管理用</summary>
     public enum GameStatus
     {
-        Start,  //タイトル,操作説明等 
-        Rule,   //ルール説明
-        CountDown,  //3・2・1・Startのアニメーション
-        GameMode, //ゲーム
+        Title,  //タイトル,操作説明等 
+        InGame, //ゲーム
         Pause, //ポーズ
         UnPause,    //ポーズ解除
         Finish, //ゲーム終了
@@ -66,33 +65,54 @@ public class GameManager : MonoBehaviour
         StartFadeIn(_fadeInImage);  // フェードイン
         _audioSource = GetComponent<AudioSource>();
         _audioSource.loop = true;
+        //_currentScene = SceneManager.GetActiveScene().name;
+        //if (_currentScene == "Title") state = GameStatus.Title;
+        //else if (_currentScene == "SinglePlay") state = GameStatus.InGame;
 
         ///*****シーンによってStartで行う処理が異なる*****
         //タイトルシーンのとき
+        if (state == GameStatus.Title)
+        {
 
-
+        }
         //ゲームシーンのとき
-
-        //NavMesh（NPC)止めておく・シネマシーンcart（ターゲット）止めておく・Player操作受け付けない（UIのみ受け付ける）
-        _npc1.speed = 0f;
-        _npc2.speed = 0f;
-        _npc3.speed = 0f;
-        _npcTarget.m_Speed = 0f;
+        else if (state == GameStatus.InGame)
+        {
+            //NavMesh（NPC)止めておく・シネマシーンcart（ターゲット）止めておく・Player操作受け付けない（UIのみ受け付ける）
+            _npc1.speed = 0f;
+            _npc2.speed = 0f;
+            _npc3.speed = 0f;
+            _npcTarget.m_Speed = 0f;
+        }
     }
 
     private void Update()
     {
         ///*****シーンによってUpdateで行う処理が異なる*****
         //タイトルシーンのとき
+        if (state == GameStatus.Title)
+        {
 
+        }
 
         //ゲームシーンのとき
-
-        //NPCとターゲットのSpeedを取得する
-        _npc1.speed = npc1Speed;
-        _npc2.speed = npc2Speed;
-        _npc3.speed = npc3Speed;
-        _npcTarget.m_Speed = targetSpeed;
+        else if (state == GameStatus.InGame)
+        {
+            //NPCとターゲットのSpeedを取得する
+            _npc1.speed = npc1Speed;
+            _npc2.speed = npc2Speed;
+            _npc3.speed = npc3Speed;
+            _npcTarget.m_Speed = targetSpeed;
+        }
+        //順位決定時
+        else if(state == GameStatus.Finish)
+        {
+            _npc1.speed = 0f;
+            _npc2.speed = 0f;
+            _npc3.speed = 0f;
+            _npcTarget.m_Speed = 0f;
+            Player.gameInputs.Disable();
+        }
     }
 
 
@@ -102,5 +122,11 @@ public class GameManager : MonoBehaviour
         _countDownPanel.SetActive(true);
         _rulePanel.SetActive(false);
         _freeLookCamera.enabled = true;
-;    }
+    }
+
+    /// <summary>staticにした変数等をリセットする</summary>
+    void ReStart()
+    {
+        
+    }
 }
