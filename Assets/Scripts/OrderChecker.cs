@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 /// <summary> 順位判定をするためのクラス </summary>
 public class OrderChecker : MonoBehaviour
@@ -14,6 +15,10 @@ public class OrderChecker : MonoBehaviour
     [SerializeField] Text _first, _second, _third, _fourth, _pScore;
     [SerializeField] Player _player;
     [SerializeField] GameManager _gm;
+    [SerializeField] GameObject _btGoTitle;
+    [SerializeField, Header("Playerについてる、SE用のAudioSource")] AudioSource _as;
+    [SerializeField] AudioClip _goalSE;
+
 
     private void LateUpdate()
     {
@@ -30,6 +35,7 @@ public class OrderChecker : MonoBehaviour
         if (lastOrder.Contains("Player"))
         {
             Player.gameInputs.Player.BoatMove.Disable();
+            _as.PlayOneShot(_goalSE);
             _gm.state = GameManager.GameStatus.PlayerGole;
         }
         //↓すべてのPlayer・NPCがゴールしたら
@@ -42,6 +48,11 @@ public class OrderChecker : MonoBehaviour
             _third.text = $"3rd {lastOrder[2]}";
             _fourth.text = $"4th {lastOrder[3]}";
             _pScore.text = $"Player's Score : {_player.ScoreValue.ToString("D8")}";
+            //初期選択ボタンの初期化
+            EventSystem.current.SetSelectedGameObject(null);
+            //初期選択ボタンの再指定
+            EventSystem.current.SetSelectedGameObject(_btGoTitle);
+
             _resultPanel.SetActive(true);
             
         }

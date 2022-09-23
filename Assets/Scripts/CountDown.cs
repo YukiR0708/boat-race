@@ -21,10 +21,10 @@ public class CountDown : MonoBehaviour
     {
 
         //NavMesh(8.0~9.0のスピードで動かす・シネマシーンcart動かす・Player操作受け付ける・BGM鳴らしてループさせる
-        GameManager.npc1Speed = Random.Range(8.0f, 9.0f);
-        GameManager.npc2Speed = Random.Range(8.0f, 9.0f);
-        GameManager.npc3Speed = Random.Range(8.0f, 9.0f);
-        GameManager.targetSpeed = 10f;
+        GameManager.npc1Speed = Random.Range(10.0f, 11.0f);
+        GameManager.npc2Speed = Random.Range(10.0f, 11.0f);
+        GameManager.npc3Speed = Random.Range(10.0f, 11.0f);
+        GameManager.targetSpeed = 12f;
         Player.gameInputs.Enable();
 
     }

@@ -46,7 +46,7 @@ public class Boat : MonoBehaviour
                 //↓次の周分入れ直してラップ数カウント・UI表示（Playerの場合）する
                 checkPoint.AddRange(checkPoints);
                 _lapcount++;
-                if (_lapText) _lapText.text = $"LAP:{_lapcount.ToString()}/3";
+                if (_lapText && _lapcount < 4) _lapText.text = $"LAP:{_lapcount.ToString()}/3";
                 //↓3周したらlastOrderに自身を追加する
                 if (CheckCount == checkPoint.Count * 3) _orderChecker.lastOrder.Add(this.name);
 

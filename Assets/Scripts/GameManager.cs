@@ -12,10 +12,10 @@ using Cinemachine;
 public class GameManager : MonoBehaviour
 {
     public GameStatus state = GameStatus.Title;
-    //[Tooltip("現在のシーン名")] string _currentScene;
     [SerializeField, Header("カメラ入力")] CinemachineInputProvider _freeLookCamera;
     //*****UI関連*****
     [Header("フェードイン用イメージ"), SerializeField] Image _fadeInImage;
+    [Header("フェードアウト用イメージ"), SerializeField] Image _fadeOutImage;
     public static AudioSource _audioSource;
     [SerializeField, Header("ルール説明用パネル")] GameObject _rulePanel;
     [SerializeField, Header("カウントダウン用パネル")] GameObject _countDownPanel;
@@ -63,7 +63,6 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         ///*****各シーン共通の処理*****
-        StartFadeIn(_fadeInImage);  // フェードイン
         _audioSource = GetComponent<AudioSource>();
         _audioSource.loop = true;
         //_currentScene = SceneManager.GetActiveScene().name;
@@ -79,11 +78,13 @@ public class GameManager : MonoBehaviour
         //ゲームシーンのとき
         else if (state == GameStatus.InGame)
         {
+            StartFadeIn(_fadeInImage);  // フェードイン
             //NavMesh（NPC)止めておく・シネマシーンcart（ターゲット）止めておく・Player操作受け付けない（UIのみ受け付ける）
             _npc1.speed = 0f;
             _npc2.speed = 0f;
             _npc3.speed = 0f;
             _npcTarget.m_Speed = 0f;
+            _audioSource.volume = 1f;
         }
     }
 
@@ -124,9 +125,13 @@ public class GameManager : MonoBehaviour
         _freeLookCamera.enabled = true;
     }
 
-    /// <summary>staticにした変数等をリセットする</summary>
-    void ReStart()
+    /// <summary>staticにした変数等をリセットし、タイトルに戻る</summary>
+    public void ReStart()
     {
-        
+        npc1Speed = 0f;
+        npc2Speed = 0f;
+        npc3Speed = 0f;
+        _npcTarget.m_Speed = 0f;
+        StartFadeOut(_fadeOutImage, "Title");
     }
 }
