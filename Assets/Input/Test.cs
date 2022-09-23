@@ -586,7 +586,7 @@ public partial class @Test : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""0561bcb6-9b8c-402f-8c30-8f2c0fef5e35"",
-                    ""path"": ""*/{Submit}"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse;Gamepad;Touch;Joystick;XR"",

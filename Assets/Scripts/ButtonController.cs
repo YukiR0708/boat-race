@@ -2,17 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(Button))]
 
 public class ButtonController : MonoBehaviour
 {
+    [SerializeField] GameObject _firstPanel;
     [SerializeField] GameObject _btSinglePlayer;
     [SerializeField] GameObject _btTwoPlayer;
     [SerializeField] GameObject _btHelp;
+    [SerializeField] GameObject _btCloseHelp;
 
+    [SerializeField] GameObject _secondPanel;
     [SerializeField] GameObject _btSingleStart;
     [SerializeField] GameObject _btRanking;
+    [SerializeField] GameObject _btCloseRanking;
     [SerializeField] GameObject _btPageBack;
     [SerializeField] GameObject _rankingPanel;
     [SerializeField] GameObject _helpPanel;
@@ -38,34 +43,30 @@ public class ButtonController : MonoBehaviour
     {
         if (_buttonName == "SinglePlayerButton")
         {
-            _btSinglePlayer.SetActive(false);
-            _btTwoPlayer.SetActive(false);
-            _btHelp.SetActive(false);
-            _btSingleStart.SetActive(true);
-            _btRanking.SetActive(true);
-            _btPageBack.SetActive(true);
+            
             _as.PlayOneShot(_clickedSE);
+            ChangeSelectButton(_btSingleStart);
+            _firstPanel.SetActive(false);
+            _secondPanel.SetActive(true);
+
         }
         else if (_buttonName == "PageBackButton")
         {
-            _btSinglePlayer.SetActive(true);
-            _btTwoPlayer.SetActive(true);
-            _btHelp.SetActive(true);
-            _btSingleStart.SetActive(false);
-            _btRanking.SetActive(false);
-            _btPageBack.SetActive(false);
             _as.PlayOneShot(_clickedSE);
+            ChangeSelectButton(_btSinglePlayer);
+            _secondPanel.SetActive(false);
+            _firstPanel.SetActive(true);
         }
         else if (_buttonName == "TwoPlayerButton")
         {
-            //  2人用船選択画面へ（SceneManager完成したらそのメソッド呼ぶ）
+            //  2人用画面へ（SceneManager完成したらそのメソッド呼ぶ）
 
         }
         else if (_buttonName == "StartButton")
         {
+            _as.PlayOneShot(_clickedSE);
             //  シングルプレイ画面へ
             _gm.StartFadeOut(_fadeOutImage, "SinglePlay");
-            _as.PlayOneShot(_clickedSE);
 
         }
         else if (_buttonName == "RankButton" || _buttonName == "CloseRank")
@@ -73,10 +74,12 @@ public class ButtonController : MonoBehaviour
             //RankingPanelの表示・非表示切り替え
             if (_rkPanelActive == false)
             {
+                ChangeSelectButton(_btCloseRanking);
                 _rkPanelActive = true;
             }
             else if (_rkPanelActive == true)
             {
+                ChangeSelectButton(_btRanking);
                 _rkPanelActive = false;
             }
             _as.PlayOneShot(_clickedSE);
@@ -88,15 +91,13 @@ public class ButtonController : MonoBehaviour
             //RankingPanelの表示・非表示切り替え
             if (_helpPanelActive == false)
             {
+                ChangeSelectButton(_btCloseHelp);
                 _helpPanelActive = true;
-                Debug.Log("表示");
-                Debug.Log(_helpPanelActive);
             }
             else if (_helpPanelActive == true)
             {
+                ChangeSelectButton(_btHelp);
                 _helpPanelActive = false;
-                Debug.Log("非表示");
-                Debug.Log(_helpPanelActive);
             }
 
             _as.PlayOneShot(_clickedSE);
@@ -104,5 +105,16 @@ public class ButtonController : MonoBehaviour
         }
 
         _buttonName = "";
+    }
+
+    /// <summary>ゲームパッド操作時に、最初に選択しておくボタンを切り替える処理</summary>
+    /// <param name="clickedButton"></param>
+    private void ChangeSelectButton(GameObject clickedButton)
+    {
+        //初期選択ボタンの初期化
+        EventSystem.current.SetSelectedGameObject(null);
+        //初期選択ボタンの再指定
+        EventSystem.current.SetSelectedGameObject(clickedButton);
+
     }
 }
