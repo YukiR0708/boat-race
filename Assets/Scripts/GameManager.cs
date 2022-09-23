@@ -38,6 +38,7 @@ public class GameManager : MonoBehaviour
         InGame, //ゲーム
         Pause, //ポーズ
         UnPause,    //ポーズ解除
+        PlayerGole, //Playerがゴール
         Finish, //ゲーム終了
     }
 
@@ -95,8 +96,8 @@ public class GameManager : MonoBehaviour
 
         }
 
-        //ゲームシーンのとき
-        else if (state == GameStatus.InGame)
+        //ゲーム中のとき
+        else if (state == GameStatus.InGame || state == GameStatus.PlayerGole)
         {
             //NPCとターゲットのSpeedを取得する
             _npc1.speed = npc1Speed;
@@ -111,7 +112,6 @@ public class GameManager : MonoBehaviour
             _npc2.speed = 0f;
             _npc3.speed = 0f;
             _npcTarget.m_Speed = 0f;
-            Player.gameInputs.Disable();
         }
     }
 

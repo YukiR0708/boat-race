@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class OrderChecker : MonoBehaviour
 {
     [SerializeField, Header("PlayerとNPCのリスト")] List<Boat> boatList = new();
-    [Tooltip("最終的な順位順のリスト")] public List<Boat> lastOrder = new();
+    [Tooltip("最終的な順位順のリスト")] public List<string> lastOrder = new();
     [SerializeField, Header("プレイヤー・NPCの合計数")] int _boatSum;
     [SerializeField, Header("結果発表パネル")] GameObject _resultPanel;
     [SerializeField] Text _first, _second, _third, _fourth, _pScore;
@@ -26,15 +26,21 @@ public class OrderChecker : MonoBehaviour
             boat.SetRank(rank++);
         }
 
+        //↓Playerがゴールしたら移動入力を止める  
+        if (lastOrder.Contains("Player"))
+        {
+            Player.gameInputs.Player.BoatMove.Disable();
+            _gm.state = GameManager.GameStatus.PlayerGole;
+        }
         //↓すべてのPlayer・NPCがゴールしたら
-        if(lastOrder.Count == _boatSum)
+        if (lastOrder.Count == _boatSum)
         {
             _gm.state = GameManager.GameStatus.Finish;
             //結果を表示する
-            _first.text = $"1st {lastOrder[0].name}";
-            _second.text = $"2nd {lastOrder[1].name}";
-            _third.text = $"3rd {lastOrder[2].name}";
-            _fourth.text = $"4th {lastOrder[3].name}";
+            _first.text = $"1st {lastOrder[0]}";
+            _second.text = $"2nd {lastOrder[1]}";
+            _third.text = $"3rd {lastOrder[2]}";
+            _fourth.text = $"4th {lastOrder[3]}";
             _pScore.text = $"Player's Score : {_player.ScoreValue.ToString("D8")}";
             _resultPanel.SetActive(true);
             

@@ -22,7 +22,7 @@ public class Player : MonoBehaviour
     //*****UI・DOTween関連*****
     [SerializeField, Tooltip("Scoreテキスト")] Text _scoreText;
     [SerializeField] float _scoreChangeInterval = 0.5f; //何秒かけて変化させるか
-     AudioSource _audioSource;
+    AudioSource _audioSource;
 
     //*****アイテム関連*****
     [SerializeField, Tooltip("潜る力")] private float _diveForce;
@@ -67,7 +67,7 @@ public class Player : MonoBehaviour
     //*****InputActionに入力を渡す処理*****
     /// <summary> プレイヤー移動コールバック </summary>
     /// <param name="context"></param>
-    void OnBoatMove(InputAction.CallbackContext context)
+    public void OnBoatMove(InputAction.CallbackContext context)
     {
         //↓BoatMoveアクションの入力を取得
         _moveInputValue = context.ReadValue<Vector2>().normalized;
@@ -75,7 +75,7 @@ public class Player : MonoBehaviour
 
     /// <summary>アイテム使用コールバック</summary>
     /// <param name="context"></param>
-    void OnUseItem(InputAction.CallbackContext context)
+    public void OnUseItem(InputAction.CallbackContext context)
     {
         if (_itemList.Count > 0)
         {

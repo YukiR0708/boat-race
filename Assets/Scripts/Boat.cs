@@ -48,7 +48,7 @@ public class Boat : MonoBehaviour
                 _lapcount++;
                 if (_lapText) _lapText.text = $"LAP:{_lapcount.ToString()}/3";
                 //«3ü‚µ‚½‚çlastOrder‚É©g‚ğ’Ç‰Á‚·‚é
-                if (CheckCount == checkPoint.Count * 3) _orderChecker.lastOrder.Add(this);
+                if (CheckCount == checkPoint.Count * 3) _orderChecker.lastOrder.Add(this.name);
 
             }
             _nextCheckPoint = checkPoint[0];

@@ -22,6 +22,7 @@ public abstract class ItemBase : MonoBehaviour
     private void Start()
     {
         _audioSource = GameObject.FindGameObjectWithTag("Player").GetComponent<AudioSource>();
+        
     }
 
     void Update()
@@ -33,7 +34,7 @@ public abstract class ItemBase : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         ///*****Playerに当たったときの処理*****
-        if (other.CompareTag("Player"))
+        if ((FindObjectOfType<GameManager>().state != GameManager.GameStatus.PlayerGole) && other.CompareTag("Player"))
         {
             //↓アイテムごとにアサインしたClipを鳴らす
             if (_sound)
