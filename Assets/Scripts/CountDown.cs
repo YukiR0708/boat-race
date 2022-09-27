@@ -8,6 +8,7 @@ public class CountDown : MonoBehaviour
     
 {
     [SerializeField, Header("カウントダウン用SE")] AudioClip _countdownSE;
+    [SerializeField] Player _player;
 
     /// <summary>カウントダウン用SEを鳴らす</summary>
     void PlayCountDownSE()
@@ -26,6 +27,8 @@ public class CountDown : MonoBehaviour
         GameManager.npc3Speed = Random.Range(10.0f, 11.0f);
         GameManager.targetSpeed = 12f;
         Player.gameInputs.Enable();
+        _player.canPlayerMove = true;
+        
 
     }
     

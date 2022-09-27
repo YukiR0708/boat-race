@@ -7,7 +7,7 @@ using UnityEngine;
 public class SpeedUp : ItemBase   // ItemBase2D を継承している
 {
     /// <summary>増加スピード</summary>
-    [SerializeField] int _upSpeed = 500;
+    [SerializeField] int _upSpeed = 400;
 
     public override void Activate()
     {

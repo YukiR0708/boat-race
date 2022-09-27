@@ -16,8 +16,6 @@ public class OrderChecker : MonoBehaviour
     [SerializeField] Player _player;
     [SerializeField] GameManager _gm;
     [SerializeField] GameObject _btGoTitle;
-    [SerializeField, Header("Playerについてる、SE用のAudioSource")] AudioSource _as;
-    [SerializeField] AudioClip _goalSE;
 
 
     private void LateUpdate()
@@ -35,7 +33,7 @@ public class OrderChecker : MonoBehaviour
         if (lastOrder.Contains("Player"))
         {
             Player.gameInputs.Player.BoatMove.Disable();
-            _as.PlayOneShot(_goalSE);
+            _player.canPlayerMove = false;
             _gm.state = GameManager.GameStatus.PlayerGole;
         }
         //↓すべてのPlayer・NPCがゴールしたら

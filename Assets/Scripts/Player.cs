@@ -17,7 +17,9 @@ public class Player : MonoBehaviour
     [SerializeField] private float _moveForce;
     [Tooltip("キー入力")] public static Test gameInputs;
     private Vector2 _moveInputValue;
+    private float _rotationPerSec = 120.0f;
     [SerializeField, Tooltip("FreeLookCamera")] private Camera _tpsCamera;
+    public bool canPlayerMove;
 
     //*****UI・DOTween関連*****
     [SerializeField, Tooltip("Scoreテキスト")] Text _scoreText;
@@ -42,7 +44,6 @@ public class Player : MonoBehaviour
         gameInputs.Player.BoatMove.performed += OnBoatMove;
         gameInputs.Player.BoatMove.canceled += OnBoatMove;
         gameInputs.Player.UseItem.performed += OnUseItem;
-        //gameInputs.Enable();
         ///*****各種デフォルト値設定*****
         _scoreText.text = "SCORE:" + ScoreValue.ToString("D8");
 
@@ -50,18 +51,25 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+
         //*****PlayerのTPS移動(cameraの前方を常に正面とする)処理*****
         //↓カメラのローカル空間のベクトルをワールド空間のベクトルへ変換
         Vector3 pForward = _tpsCamera.transform.TransformDirection(Vector3.forward);
         Vector3 pRight = _tpsCamera.transform.TransformDirection(Vector3.right);
 
-        //↓ベクトルを加算して進行方向ベクトルを決定（y軸は無視）
-        Vector3 moveDir = (_moveInputValue.x * pRight + _moveInputValue.y * pForward) * _moveForce * Time.deltaTime;
-        moveDir.y = 0;
-        _rigidbody.AddForce(moveDir);
+        if (canPlayerMove)
+        {//↓ベクトルを加算して進行方向ベクトルを決定（y軸は無視）
+            Vector3 moveDir = (_moveInputValue.x * pRight + _moveInputValue.y * pForward) * _moveForce * Time.deltaTime;
+            moveDir.y = 0;
+            _rigidbody.AddForce(moveDir);
 
-        //↓補完しながら進行方向を向く
-        transform.LookAt(transform.position + moveDir);
+            if ((_moveInputValue.x != 0f) && (_moveInputValue.y != 0f))
+            {
+                //↓補完しながら進行方向を向く
+                transform.rotation
+                    = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(moveDir), _rotationPerSec * Time.deltaTime);
+            }
+        }
     }
 
     //*****InputActionに入力を渡す処理*****
@@ -114,14 +122,14 @@ public class Player : MonoBehaviour
     public void Dive(float diveForce)
     {
         _diveForce += diveForce;
-        Debug.Log(_diveForce);
+        //Debug.Log(_diveForce);
     }
 
     /// <summary> 速度を増加させるメソッド </summary>
     public void SpeedUp(float upSpeed)
     {
         _moveForce += upSpeed;
-        Debug.Log(_moveForce);
+        //Debug.Log(_moveForce);
     }
 
 }

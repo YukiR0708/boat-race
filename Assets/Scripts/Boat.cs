@@ -21,6 +21,9 @@ public class Boat : MonoBehaviour
     [Tooltip("移動量を計測する際、次に通るチェックポイント")] GameObject _nextCheckPoint;
     [SerializeField, Header("コライダーと座標の差分補完のためのオブジェクト")] GameObject _boatPos;
     [SerializeField] OrderChecker _orderChecker;
+    [SerializeField, Header("Playerについてる、SE用のAudioSource")] AudioSource _as;
+    [SerializeField] AudioClip _goalSE;
+
 
     private void Start()
     {
@@ -47,6 +50,8 @@ public class Boat : MonoBehaviour
                 checkPoint.AddRange(checkPoints);
                 _lapcount++;
                 if (_lapText && _lapcount < 4) _lapText.text = $"LAP:{_lapcount.ToString()}/3";
+                if(_lapcount == 4 && this.gameObject.CompareTag("Player")) _as.PlayOneShot(_goalSE);
+
                 //↓3周したらlastOrderに自身を追加する
                 if (CheckCount == checkPoint.Count * 3) _orderChecker.lastOrder.Add(this.name);
 
